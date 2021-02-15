@@ -7,14 +7,24 @@
     $databasePassword = '';
         $mysqli = mysqli_connect($databaseHost, $databaseUsername, $databasePassword, $databaseName);
 //3.maak een index.php aan (homescreen)
-    //-zet daarin: een table, met tr en td voor de namen
-    //-Maak daarna een php loop, zodat die daaronder de resultaten laat zien van alle gegevens
+    //helemaal boven in komt een aparte php tag met daarin:
+        include_once("config.php");
+        $result = mysqli_query($mysqli, "SELECT * FROM users ORDER BY id DESC");
+
+        //-zet daarin: een table, met tr en td voor de namen
+        //-Maak daarna een php loop, zodat die daaronder de resultaten laat zien van alle gegevens
             while($res = mysqli_fetch_array($result)) {
                 echo "<tr>";
                 echo "<td>".$res['id']."</td>";
     //boven in zet je een link die naar add.html gaat, daar maak je de nieuwe data aan
 //4. Maak een add.html aan, hierin maak je een form met action="add.php" en method post en name form1
     //zet in je form: naam, leeftijd, email en een knop.
+    <form action="add.php" method="post" name="form1">
+    <table width="25%" border="0">
+        <tr>
+            <td>Name*</td>
+            <td><input type="text" name="name"></td>
+        </tr>
     //Als je op de knop drukt, voert ie de php code uit van add.php
 
 //5. maak een add.php file aan. Zet hierin alleen code.
@@ -46,9 +56,12 @@
                             $result = mysqli_query($mysqli, "DELETE FROM users WHERE id=$id");
                             //zorg ervoor dat je hierna terug gaat naar de homepage, zodat je de site niet hoeft te refreshen met de url link.
                             header("Location:index.php");
-//7. maak een update functie aan, hierin zet je php code en de tabel met de oude gegevens erin, die zet je in html, samen met een kleine php code erbij
+//7. maak een edit functie aan, hierin zet je php code en de tabel met de oude gegevens erin, die zet je in html, samen met een kleine php code erbij
         //begin weer met het includen naar je connectie
                             include_once("config.php");
+
+                            if(isset($_POST['update']))
+                                {
                             //zorg er daarna voor dat wanneer je op update klikt, dat je de data heb: id name age en email, zodat je die kan bewerken.
                                 $id = mysqli_real_escape_string($mysqli, $_POST['id']); // doe dit voor alle velden
                                 //check daarna weer of de velden zijn ingevuld
